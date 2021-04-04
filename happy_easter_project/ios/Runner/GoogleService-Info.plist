@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>682182467476-hr2d3nlkaitfag6s1duei847vvvgdo2i.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.682182467476-hr2d3nlkaitfag6s1duei847vvvgdo2i</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBt4S8gM10ALh-MO_6fsAswVvJVSvKgpuw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>682182467476</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>top.latest.happy.easter.wishes.shayari.status.images.sms.quotes.gif.status.greeting.card.meme.maker</string>
+	<key>PROJECT_ID</key>
+	<string>message-for-all-ocassion</string>
+	<key>STORAGE_BUCKET</key>
+	<string>message-for-all-ocassion.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:682182467476:ios:d3e3779c0be8a51bc0f981</string>
+	<key>DATABASE_URL</key>
+	<string>https://message-for-all-ocassion.firebaseio.com</string>
+</dict>
+</plist>
