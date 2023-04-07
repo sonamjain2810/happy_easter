@@ -1,20 +1,24 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import '../utils/SizeConfig.dart';
+// Ganesh Chaturathi Make Meme or Greetings Design
 
-class CustomBannerWidget extends StatelessWidget {
-  const CustomBannerWidget({
+import 'package:cached_network_image/cached_network_image.dart';
+import '/utils/SizeConfig.dart';
+import 'package:flutter/material.dart';
+
+class CustomBannerWidget2 extends StatelessWidget {
+  const CustomBannerWidget2({
     Key? key,
     required this.size,
-    this.imagePath,
-    this.topText,
-    this.middleText,
-    this.bottomText,
-    this.buttonText,
+    required this.imagePath,
+    required this.topText,
+    required this.middleText,
+    required this.bottomText,
+    required this.buttonText,
+    required this.ontap,
   }) : super(key: key);
 
   final Size size;
-  final String? imagePath, topText, middleText, bottomText, buttonText;
+  final String imagePath, topText, middleText, bottomText, buttonText;
+  final Function ontap;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +26,7 @@ class CustomBannerWidget extends StatelessWidget {
       builder: (context, constraints) {
         return InkWell(
           child: Container(
-            color: Colors.amber[800],
+            color: Theme.of(context).colorScheme.primaryVariant,
             height: size.height * 0.35,
             width: constraints.maxWidth,
             child: Stack(
@@ -35,7 +39,7 @@ class CustomBannerWidget extends StatelessWidget {
                     height: constraints.maxHeight * 1,
                     width: constraints.maxWidth / 2.5,
                     child: CachedNetworkImage(
-                      imageUrl: imagePath!,
+                      imageUrl: imagePath,
                       fit: BoxFit.fill,
                       placeholder: (context, url) =>
                           const CircularProgressIndicator(),
@@ -57,7 +61,7 @@ class CustomBannerWidget extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
-                            Text(topText!,
+                            Text(topText,
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyText1!
@@ -66,7 +70,7 @@ class CustomBannerWidget extends StatelessWidget {
                                         color: Colors.white),
                                 textAlign: TextAlign.center),
                             Text(
-                              middleText!,
+                              middleText,
                               style: Theme.of(context)
                                   .textTheme
                                   .headline1!
@@ -75,7 +79,7 @@ class CustomBannerWidget extends StatelessWidget {
                                       color: Colors.white),
                               textAlign: TextAlign.center,
                             ),
-                            Text(bottomText!,
+                            Text(bottomText,
                                 style: Theme.of(context)
                                     .textTheme
                                     .subtitle1!
@@ -92,7 +96,7 @@ class CustomBannerWidget extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: <Widget>[
                                   Text(
-                                    buttonText!,
+                                    buttonText,
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyText2!
@@ -118,6 +122,7 @@ class CustomBannerWidget extends StatelessWidget {
               ],
             ),
           ),
+          onTap: ontap(),
         );
       },
     );

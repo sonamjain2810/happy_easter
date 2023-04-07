@@ -1,8 +1,8 @@
-
 import 'package:flutter/material.dart';
-import 'package:happy_easter/QuotesList.dart';
-import 'package:share/share.dart';
+import 'package:launch_review/launch_review.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'QuotesList.dart';
 import 'data/Strings.dart';
 import 'utils/SizeConfig.dart';
 import 'AboutUs.dart';
@@ -105,7 +105,7 @@ class _MyDrawerState extends State<MyDrawer> {
                     onTap: () async {
                       Navigator.of(context).pop();
                       print("Feedback Button Clicked");
-                    
+
                       if (await canLaunch(Strings.mailContent)) {
                         await launch(Strings.mailContent);
                       } else {
@@ -122,9 +122,8 @@ class _MyDrawerState extends State<MyDrawer> {
                         color: Theme.of(context).primaryIconTheme.color),
                     onTap: () {
                       Navigator.of(context).pop();
-                        print("More Button Clicked");
-                        launch(Strings.accountUrl);
-                      
+                      print("More Button Clicked");
+                      launch(Strings.accountUrl);
                     },
                   ),
                   Divider(),
@@ -136,7 +135,8 @@ class _MyDrawerState extends State<MyDrawer> {
                         color: Theme.of(context).primaryIconTheme.color),
                     onTap: () {
                       Navigator.of(context).pop();
-                      launch(Strings.appUrl);
+                      //launch(Strings.appUrl);
+                      Strings.RateNReview();
                     },
                   ),
                   Divider(),
@@ -149,7 +149,8 @@ class _MyDrawerState extends State<MyDrawer> {
                       onTap: () {
                         print("Share Button Clicked");
                         Navigator.of(context).pop();
-                        final RenderBox box = context.findRenderObject();
+                        final RenderBox box =
+                            context.findRenderObject() as RenderBox;
                         Share.share(
                           Strings.shareAppText,
                           sharePositionOrigin:
@@ -174,5 +175,3 @@ class _MyDrawerState extends State<MyDrawer> {
     );
   }
 }
-
-

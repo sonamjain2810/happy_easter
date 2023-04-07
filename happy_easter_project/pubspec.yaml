@@ -1,4 +1,4 @@
-name: happy_easter
+name: happy_easter_project
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -15,46 +15,56 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 2.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=2.18.6 <3.0.0'
 
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
 dependencies:
   flutter:
     sdk: flutter
 
+  flutter_lints: ^2.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.3
-  google_fonts: any
-  http: ^0.12.1
-  #share: ^0.6.4+3
-  share: any
-  url_launcher: ^5.4.10
-  firebase_admob: ^0.10.2
-  flutter_native_admob: any
-  image_picker: any
-  path_provider: any
-  image_gallery_saver: any
-  permission_handler: any
-  dio: any
-  fluttertoast: any
-  cached_network_image: ^2.2.0+1
-
-
-  # Material Icon Designs
-  material_design_icons_flutter: any
-
-
-  #Extra
-  image_picker_saver: any
-  esys_flutter_share: ^1.0.2
-  facebook_app_events: any
-  facebook_audience_network: ^0.9.0
-
-
+  google_mobile_ads: ^2.3.0
+  #cupertino_icons: ^1.0.3
+  cupertino_icons: ^1.0.5
+  #google_fonts: ^2.1.0
+  google_fonts: ^3.0.1
+  #http: ^0.13.3
+  http: ^0.13.5
+  share_plus: ^6.3.1
+  #url_launcher: ^6.0.17
+  url_launcher: ^6.1.7
+  #url_launcher: ^6.1.7: ^2.3.0
+  image_picker: ^0.8.6
+  #image_picker: ^0.8.0+1
+  path_provider: ^2.0.11
+  #path_provider: ^2.0.2
+  image_gallery_saver: ^1.7.1
+  #image_gallery_saver: ^1.6.9
+  permission_handler: ^10.2.0
+  #permission_handler: ^8.0.1
+  dio: ^4.0.6
+  #dio: ^4.0.0
+  cached_network_image: ^3.2.3
+  #cached_network_image: ^3.0.0
+  app_tracking_transparency: ^2.0.3
+  #app_tracking_transparency: ^2.0.2+1
+  material_design_icons_flutter: ^6.0.7096
+  #material_design_icons_flutter: ^5.0.6595
+  facebook_app_events: ^0.18.3
+  #facebook_app_events: ^0.12.0
+  launch_review: ^3.0.1
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

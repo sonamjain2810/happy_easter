@@ -8,24 +8,24 @@ class AppTheme {
 
   // yaha per sab color define kiye hai jo hame ThemeData me use karege light Theme.
   static const Color _lightIconColor = Colors.grey;
-  static  Color _lightPrimaryColor = Colors.blueGrey[900];
-  static  Color _lightPrimaryVariantColor = Colors.pink[800];
+  static Color? _lightPrimaryColor = Colors.blueGrey[900];
+  static Color? _lightPrimaryVariantColor = Colors.pink[800];
   static const Color _lightSecondaryColor = Colors.grey;
   static const Color _lightOnPrimaryColor = Colors.white;
-  static  Color _lightPrimaryIconThemeColor = Colors.amber[700];
+  static Color? _lightPrimaryIconThemeColor = Colors.amber[700];
   static const Color _lightButtonTextColor = Colors.white;
-  static Color _lightButtonColor = Colors.pink[400];
-  static   Color _lightButtonSplashColor = Colors.purpleAccent[700];
+  static Color? _lightButtonColor = Colors.pink[400];
+  static Color? _lightButtonSplashColor = Colors.purpleAccent[700];
   static const Color _lightAppBarTextColor = Colors.white;
   static const Color _lightDividerColor = Colors.black;
-  static Color _lightCardColor = Colors.pink[700];
+  static Color? _lightCardColor = Colors.pink[700];
   static const Color _lightShadowColor = Colors.grey;
 
 // yaha per sab color define kiye hai jo hame ThemeData me use karege dark Theme.
 
   static Color _darkIconColor = Colors.white;
   static const Color _darkPrimaryColor = Colors.black;
-  static Color _darkPrimaryVariantColor = Colors.grey[800];
+  static Color? _darkPrimaryVariantColor = Colors.grey[800];
   static const Color _darkSecondaryColor = Colors.white;
   static const Color _darkOnPrimaryColor = Colors.white;
   static const Color _darkPrimaryIconThemeColor = Colors.red;
@@ -52,7 +52,7 @@ class AppTheme {
     ),
 
     colorScheme: ColorScheme.light(
-      primary: _lightPrimaryColor,
+      primary: _lightPrimaryColor!,
       primaryVariant: _lightPrimaryVariantColor,
       secondary: _lightSecondaryColor,
       onPrimary: _lightOnPrimaryColor,
@@ -79,22 +79,20 @@ class AppTheme {
     inputDecorationTheme: _lightInputDecorationTheme,
 
     // cursor color
-    cursorColor: _lightPrimaryVariantColor,
 
-  // Change circular progress bar color
+    // Change circular progress bar color
     accentColor: _lightPrimaryVariantColor,
-    
   );
 
-  static final InputDecorationTheme _lightInputDecorationTheme = InputDecorationTheme(
+  static final InputDecorationTheme _lightInputDecorationTheme =
+      InputDecorationTheme(
     enabledBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: _lightPrimaryVariantColor),
+      borderSide: BorderSide(color: _lightPrimaryVariantColor!),
       borderRadius: BorderRadius.circular(20.0),
-
     ),
     focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: _lightPrimaryVariantColor),
-      ),
+      borderSide: BorderSide(color: _lightPrimaryVariantColor!),
+    ),
     hintStyle: GoogleFonts.ptSans(textStyle: _lightScreenBodyText1TextStyle),
     contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
   );
@@ -111,11 +109,9 @@ class AppTheme {
     textTheme: ButtonTextTheme.primary,
     buttonColor: _lightButtonColor,
     splashColor: _lightButtonSplashColor,
-
     shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-
+      borderRadius: BorderRadius.circular(20),
+    ),
   );
 
   // Button text Styling
@@ -150,16 +146,14 @@ class AppTheme {
     letterSpacing: .5,
   );
 
- 
-
   // Text bodyText2 styling
-  static final TextStyle  _lightScreenBodyText2TextStyle = TextStyle(
+  static final TextStyle _lightScreenBodyText2TextStyle = TextStyle(
     //fontSize: 20
     fontSize: 2 * SizeConfig.textMultiplier,
     color: _lightPrimaryColor,
     letterSpacing: .5,
   );
-  
+
   static final TextStyle _lightScreenSubTitle1TextStyle = TextStyle(
     //fontSize: 16
     fontSize: 1.79 * SizeConfig.textMultiplier,
@@ -193,46 +187,39 @@ class AppTheme {
         color: _darkOnPrimaryColor,
       ),
     ),
-
     colorScheme: ColorScheme.light(
       primary: _darkPrimaryColor,
       primaryVariant: _darkPrimaryVariantColor,
       secondary: _darkSecondaryColor,
       onPrimary: _darkOnPrimaryColor,
     ),
-
     iconTheme: IconThemeData(
       color: _darkIconColor,
     ),
-
     primaryIconTheme: IconThemeData(color: _darkPrimaryIconThemeColor),
-
     textTheme: _darkTextTheme,
-
     buttonTheme: _darkButtonThemeData,
 
     // Drawer Color
     canvasColor: _darkPrimaryColor,
     // Divider Color
-    dividerColor:  _darkDividerColor,
+    dividerColor: _darkDividerColor,
     // Card theme
     cardTheme: _darkCardTheme,
-
     inputDecorationTheme: _darkInputDecorationTheme,
 
     //cursor color
-    cursorColor: _darkPrimaryVariantColor
-
   );
 
-  static final InputDecorationTheme _darkInputDecorationTheme = InputDecorationTheme(
+  static final InputDecorationTheme _darkInputDecorationTheme =
+      InputDecorationTheme(
     enabledBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: _darkPrimaryVariantColor),
+      borderSide: BorderSide(color: _darkPrimaryVariantColor!),
       borderRadius: BorderRadius.circular(20.0),
     ),
     focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: _darkPrimaryVariantColor),
-      ),
+      borderSide: BorderSide(color: _darkPrimaryVariantColor!),
+    ),
     hintStyle: GoogleFonts.ptSans(textStyle: _darkScreenBodyText1TextStyle),
     contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
   );
@@ -241,10 +228,11 @@ class AppTheme {
     headline1: GoogleFonts.lobster(textStyle: _darkAppBarHeadline1TextStyle),
   );
 
-  static final TextStyle _darkAppBarHeadline1TextStyle = _lightAppBarHeadline1TextStyle.copyWith(
+  static final TextStyle _darkAppBarHeadline1TextStyle =
+      _lightAppBarHeadline1TextStyle.copyWith(
     color: _darkAppBarTextColor,
   );
-  
+
   static final TextTheme _darkTextTheme = TextTheme(
     headline1: GoogleFonts.oswald(textStyle: _darkScreenHeading1TextStyle),
     bodyText1: GoogleFonts.ptSans(textStyle: _darkScreenBodyText1TextStyle),
@@ -254,22 +242,26 @@ class AppTheme {
   );
 
   // Text headline1 styling
-  static final TextStyle _darkScreenHeading1TextStyle = _lightScreenHeading1TextStyle.copyWith(
+  static final TextStyle _darkScreenHeading1TextStyle =
+      _lightScreenHeading1TextStyle.copyWith(
     color: _darkOnPrimaryColor,
   );
-  
+
   // Text bodyText1 styling
-  static final TextStyle _darkScreenBodyText1TextStyle = _lightScreenBodyText1TextStyle.copyWith(
-    color: _darkOnPrimaryColor, 
+  static final TextStyle _darkScreenBodyText1TextStyle =
+      _lightScreenBodyText1TextStyle.copyWith(
+    color: _darkOnPrimaryColor,
   );
 
   // Text subTitle1 styling
-  static final TextStyle _darkScreenSubTitle1TextStyle = _lightScreenSubTitle1TextStyle.copyWith(
+  static final TextStyle _darkScreenSubTitle1TextStyle =
+      _lightScreenSubTitle1TextStyle.copyWith(
     color: _darkOnPrimaryColor,
   );
-  
-   // Text subTitle2 styling
-  static final TextStyle _darkScreenSubTitle2TextStyle = _lightScreenSubTitle2TextStyle.copyWith(
+
+  // Text subTitle2 styling
+  static final TextStyle _darkScreenSubTitle2TextStyle =
+      _lightScreenSubTitle2TextStyle.copyWith(
     color: _darkOnPrimaryColor,
   );
   // Button Theme
@@ -277,7 +269,6 @@ class AppTheme {
       _lightButtonThemeData.copyWith(
     buttonColor: _darkButtonColor,
     splashColor: _darkButtonSplashColor,
-    
   );
   // dark Button text Styling
   static final TextStyle _darkButtonTextTextStyle =
@@ -291,6 +282,6 @@ class AppTheme {
   );
 
   static Color hexToColor(String code) {
-  return new Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
-}
+    return new Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
+  }
 }

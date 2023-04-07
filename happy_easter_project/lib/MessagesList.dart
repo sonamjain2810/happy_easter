@@ -1,16 +1,19 @@
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+
 import 'data/Messages.dart';
 import 'package:facebook_app_events/facebook_app_events.dart';
 import 'package:flutter/material.dart';
 
+import 'data/Strings.dart';
 import 'utils/SizeConfig.dart';
 import 'MessageDetailPage.dart';
 
 // ignore: must_be_immutable
 class MessagesList extends StatefulWidget {
-  String type;
+  String? type;
   MessagesList({this.type});
   @override
-  _MessagesListState createState() => _MessagesListState(type);
+  _MessagesListState createState() => _MessagesListState(type!);
 }
 
 class _MessagesListState extends State<MessagesList> {
@@ -21,6 +24,36 @@ class _MessagesListState extends State<MessagesList> {
 
   var data;
 
+  late BannerAd bannerAd1;
+  bool isBannerAdLoaded = false;
+  @override
+  void initState() {
+    super.initState();
+    bannerAd1 = GetBannerAd();
+  }
+
+  BannerAd GetBannerAd() {
+    return BannerAd(
+        size: AdSize.largeBanner,
+        adUnitId: Strings.iosAdmobBannerId,
+        listener: BannerAdListener(onAdLoaded: (_) {
+          setState(() {
+            isBannerAdLoaded = true;
+          });
+        }, onAdFailedToLoad: (ad, error) {
+          isBannerAdLoaded = true;
+          ad.dispose();
+        }),
+        request: AdRequest())
+      ..load();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    bannerAd1.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     if (type == '1') {
@@ -29,7 +62,6 @@ class _MessagesListState extends State<MessagesList> {
     } else if (type == '4') {
       // Hindi
       data = Messages.hindi_data;
-      
     } else if (type == '3') {
       // German
       data = Messages.german_data;
@@ -47,13 +79,11 @@ class _MessagesListState extends State<MessagesList> {
       data = Messages.spanish_data;
     }
 
-    
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
           "Message List",
-          style: Theme.of(context).appBarTheme.textTheme.headline1,
+          style: Theme.of(context).appBarTheme.textTheme?.headline1,
         ),
       ),
       body: SafeArea(
@@ -64,7 +94,7 @@ class _MessagesListState extends State<MessagesList> {
                     onTap: () {
                       Navigator.push(
                           context,
-                          new MaterialPageRoute(
+                          MaterialPageRoute(
                               builder: (context) =>
                                   MessageDetailPage(type, index)));
 
@@ -115,6 +145,12 @@ class _MessagesListState extends State<MessagesList> {
             : Center(
                 child: CircularProgressIndicator(),
               ),
+      ),
+      bottomNavigationBar: Container(
+        alignment: Alignment.center,
+        height: bannerAd1.size.height.toDouble(),
+        width: bannerAd1.size.width.toDouble(),
+        child: AdWidget(ad: bannerAd1),
       ),
     );
   }

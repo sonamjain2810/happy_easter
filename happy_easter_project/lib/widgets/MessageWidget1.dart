@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:happy_easter/utils/SizeConfig.dart';
+import '../utils/SizeConfig.dart';
 
 class MessageWidget1 extends StatelessWidget {
   const MessageWidget1({
-    Key key, 
-    @required this.headLine, 
-    @required this.subTitle, 
-    @required this.imagePath,
-    @required this.color,
+    Key? key,
+    required this.headLine,
+    required this.subTitle,
+    required this.imagePath,
+    required this.color,
   }) : super(key: key);
 
   final String headLine;
@@ -18,7 +18,7 @@ class MessageWidget1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:  EdgeInsets.only(right: SizeConfig.width(10.0)),
+      padding: EdgeInsets.only(right: SizeConfig.width(10.0)),
       child: Container(
         width: SizeConfig.width(250),
         decoration: BoxDecoration(
@@ -44,22 +44,16 @@ class MessageWidget1 extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Text(
-                      
                       headLine,
                       style: Theme.of(context).textTheme.headline6,
-                    textAlign: TextAlign.center,
+                      textAlign: TextAlign.center,
                     ),
                     Text(
                       subTitle,
-                      
                       style: Theme.of(context).textTheme.subtitle2,
                       maxLines: 2,
-
                       textAlign: TextAlign.center,
                     ),
-
-                                            
-
                   ],
                 ),
               ),
@@ -71,9 +65,8 @@ class MessageWidget1 extends StatelessWidget {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: NetworkImage(
-                        
-                        imagePath,
-                        ),
+                      imagePath,
+                    ),
                     fit: BoxFit.fill,
                   ),
                 ),

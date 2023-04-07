@@ -1,28 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:happy_easter/utils/SizeConfig.dart';
-
-
+import '../utils/SizeConfig.dart';
 
 class CustomFBTextWidget extends StatelessWidget {
   const CustomFBTextWidget({
-    Key key,
-    @required this.size,
+    Key? key,
+    required this.size,
     this.color,
     this.text,
     this.url,
-    this.isLeft, this.ontap,
+    this.isLeft,
   }) : super(key: key);
 
   final Size size;
-  final Color color;
-  final String text, url;
-  final bool isLeft;
-  final Function ontap;
+  final Color? color;
+  final String? text, url;
+  final bool? isLeft;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-          child: Container(
+      child: Container(
           height: size.height * 0.27,
           width: size.width * 0.27,
           decoration: BoxDecoration(
@@ -45,44 +42,42 @@ class CustomFBTextWidget extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                      text,
+                      text!,
                       style: Theme.of(context).textTheme.bodyText1,
                       textAlign: TextAlign.center,
                     ),
                   ),
                 ),
               ),
-              isLeft?
-              Positioned(
-                top: 5,
-                left: 5,
-                child: CircleAvatar(
-                  radius: 5 * SizeConfig.widthMultiplier,
-                  backgroundColor: Colors.blueAccent,
-                  child: CircleAvatar(
-                    radius: 4 * SizeConfig.widthMultiplier,
-                    backgroundImage: NetworkImage(url),
-                    backgroundColor: Colors.red,
-                  ),
-                ),
-              ):
-              Positioned(
-                top: 5,
-                right: 5,
-                child: CircleAvatar(
-                  radius: 5 * SizeConfig.widthMultiplier,
-                  backgroundColor: Colors.blueAccent,
-                  child: CircleAvatar(
-                    radius: 4 * SizeConfig.widthMultiplier,
-                    backgroundImage: NetworkImage(url),
-                    backgroundColor: Colors.red,
-                  ),
-                ),
-              ),
-
+              isLeft!
+                  ? Positioned(
+                      top: 5,
+                      left: 5,
+                      child: CircleAvatar(
+                        radius: 5 * SizeConfig.widthMultiplier,
+                        backgroundColor: Colors.blueAccent,
+                        child: CircleAvatar(
+                          radius: 4 * SizeConfig.widthMultiplier,
+                          backgroundImage: NetworkImage(url!),
+                          backgroundColor: Colors.red,
+                        ),
+                      ),
+                    )
+                  : Positioned(
+                      top: 5,
+                      right: 5,
+                      child: CircleAvatar(
+                        radius: 5 * SizeConfig.widthMultiplier,
+                        backgroundColor: Colors.blueAccent,
+                        child: CircleAvatar(
+                          radius: 4 * SizeConfig.widthMultiplier,
+                          backgroundImage: NetworkImage(url!),
+                          backgroundColor: Colors.red,
+                        ),
+                      ),
+                    ),
             ],
           )),
-          onTap: ontap,
     );
   }
 }

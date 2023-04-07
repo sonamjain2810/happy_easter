@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:happy_easter/utils/SizeConfig.dart';
+import '../utils/SizeConfig.dart';
 
 class CustomSubHeadingWidget extends StatelessWidget {
   const CustomSubHeadingWidget({
-    Key key, this.title,
+    Key? key,
+    this.title,
   }) : super(key: key);
 
-  final String title;
+  final String? title;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -16,15 +17,15 @@ class CustomSubHeadingWidget extends StatelessWidget {
         child: Row(children: [
           Text(
             "---",
-            style: Theme.of(context).textTheme.subtitle2.copyWith(
+            style: Theme.of(context).textTheme.subtitle2!.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
           ),
           Text(
-            title,
+            title!,
             style: Theme.of(context)
                 .textTheme
-                .subtitle1
+                .subtitle1!
                 .copyWith(fontWeight: FontWeight.w700),
           ),
         ]),

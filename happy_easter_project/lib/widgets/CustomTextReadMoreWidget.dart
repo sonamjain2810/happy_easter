@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:happy_easter/utils/SizeConfig.dart';
+import '../utils/SizeConfig.dart';
 
 class CustomTextReadMoreWidget extends StatelessWidget {
   const CustomTextReadMoreWidget({
-    Key key,
-    @required this.size,
-    @required this.text,
-    @required this.color,
+    Key? key,
+    required this.size,
+    required this.text,
+    required this.color,
     this.darkButtonText,
   }) : super(key: key);
 
   final Size size;
-  final String text,darkButtonText;
-  final Color color;
+  final String? text, darkButtonText;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +27,9 @@ class CustomTextReadMoreWidget extends StatelessWidget {
         width: size.width * 0.30,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: MediaQuery.of(context).platformBrightness ==
-                          Brightness.dark
-                      ? Theme.of(context).primaryColorDark
-                      : color,
+          color: MediaQuery.of(context).platformBrightness == Brightness.dark
+              ? Theme.of(context).primaryColorDark
+              : color,
           borderRadius: BorderRadius.circular(SizeConfig.height(10)),
         ),
         child: Column(
@@ -40,12 +39,12 @@ class CustomTextReadMoreWidget extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.all(SizeConfig.width(1)),
                 child: Text(
-                  text,
+                  text!,
                   style: MediaQuery.of(context).platformBrightness ==
                           Brightness.dark
                       ? Theme.of(context)
                           .textTheme
-                          .bodyText1
+                          .bodyText1!
                           .copyWith(color: Colors.black)
                       : Theme.of(context).textTheme.bodyText1,
                   textAlign: TextAlign.center,
@@ -66,10 +65,10 @@ class CustomTextReadMoreWidget extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  darkButtonText,
+                  darkButtonText!,
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText1
+                      .bodyText1!
                       .copyWith(color: Colors.white),
                   textAlign: TextAlign.right,
                 ),

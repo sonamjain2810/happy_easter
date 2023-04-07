@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:happy_easter/utils/SizeConfig.dart';
+import '../utils/SizeConfig.dart';
 
 class MessageWidget3 extends StatelessWidget {
   const MessageWidget3({
-    Key key,
-    @required this.headLine,
-    @required this.subTitle,
-    @required this.imagePath,
-    @required this.color,
+    Key? key,
+    required this.headLine,
+    required this.subTitle,
+    required this.imagePath,
+    required this.color,
   }) : super(key: key);
 
   final String headLine;
@@ -21,7 +21,7 @@ class MessageWidget3 extends StatelessWidget {
       padding: EdgeInsets.only(right: SizeConfig.width(10.0)),
       child: Container(
         width: SizeConfig.width(180),
-        height: SizeConfig.height(164),
+        height: SizeConfig.height(170),
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.all(Radius.circular(SizeConfig.width(5))),
@@ -51,7 +51,7 @@ class MessageWidget3 extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               // Item1 with two Text
               Container(
                 width: SizeConfig.width(180),

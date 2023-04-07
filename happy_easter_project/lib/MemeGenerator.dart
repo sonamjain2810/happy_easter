@@ -4,11 +4,10 @@ import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
-import 'package:facebook_app_events/facebook_app_events.dart';
-import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_native_admob/native_admob_controller.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
@@ -16,7 +15,6 @@ import 'package:permission_handler/permission_handler.dart';
 
 import 'data/Strings.dart';
 import 'utils/SizeConfig.dart';
-import 'NativeAdContainer.dart';
 
 class MemeGenerator extends StatefulWidget {
   @override
@@ -24,65 +22,47 @@ class MemeGenerator extends StatefulWidget {
 }
 
 class _MemeGeneratorState extends State<MemeGenerator> {
-// Native Ad Open
-static String _adUnitID = Strings.iosAdmobNativeId;
-  final _nativeAdController = NativeAdmobController();
-  double _height = 0;
-
-  StreamSubscription _subscription;
-
-  static final facebookAppEvents = FacebookAppEvents();
-
-
-//Native Ad Close
-
   final GlobalKey globalKey = new GlobalKey();
 
   String headerText = "";
   String footerText = "";
 
-  PickedFile _image;
-  File _imageFile;
+  PickedFile? _image;
+  File? _imageFile;
 
   bool imageSelected = false;
 
   Random rng = new Random();
   final ImagePicker _picker = ImagePicker();
 
+  late BannerAd bannerAd1;
+  bool isBannerAdLoaded = false;
   @override
   void initState() {
     super.initState();
+    bannerAd1 = GetBannerAd();
+  }
 
-    //Native Ad
-    _subscription = _nativeAdController.stateChanged.listen(_onStateChanged);
-    //
+  BannerAd GetBannerAd() {
+    return BannerAd(
+        size: AdSize.largeBanner,
+        adUnitId: Strings.iosAdmobBannerId,
+        listener: BannerAdListener(onAdLoaded: (_) {
+          setState(() {
+            isBannerAdLoaded = true;
+          });
+        }, onAdFailedToLoad: (ad, error) {
+          isBannerAdLoaded = true;
+          ad.dispose();
+        }),
+        request: AdRequest())
+      ..load();
   }
 
   @override
   void dispose() {
-    //Native Ad
-    _subscription.cancel();
-    _nativeAdController.dispose();
     super.dispose();
-  }
-
-  void _onStateChanged(AdLoadState state) {
-    switch (state) {
-      case AdLoadState.loading:
-        setState(() {
-          _height = 0;
-        });
-        break;
-
-      case AdLoadState.loadCompleted:
-        setState(() {
-          _height = 36.83 * SizeConfig.heightMultiplier;
-        });
-        break;
-
-      default:
-        break;
-    }
+    bannerAd1.dispose();
   }
 
   Future getImage() async {
@@ -98,7 +78,7 @@ static String _adUnitID = Strings.iosAdmobNativeId;
         _image = pickedFile;
       });
     } catch (platformException) {
-      print("not allowing " + platformException);
+      print("not allowing " + platformException.toString());
     }
 
     /* try { 
@@ -121,8 +101,8 @@ static String _adUnitID = Strings.iosAdmobNativeId;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Wish Creator",
-          style: Theme.of(context).appBarTheme.textTheme.headline1,
+          "Invitation & Card Creator",
+          style: Theme.of(context).appBarTheme.textTheme!.headline1,
         ),
       ),
       body: SingleChildScrollView(
@@ -140,7 +120,7 @@ static String _adUnitID = Strings.iosAdmobNativeId;
                     children: <Widget>[
                       _image != null
                           ? Image.file(
-                              File(_image.path),
+                              File(_image!.path),
                               //300
                               height: 33.48 * SizeConfig.heightMultiplier,
                               fit: BoxFit.fill,
@@ -239,11 +219,8 @@ static String _adUnitID = Strings.iosAdmobNativeId;
                                   headerText = val;
                                 });
                               },
-                              decoration:
-                                
-                                  InputDecoration(
-                                    
-                                    hintText: "Enter Header Text"),
+                              decoration: InputDecoration(
+                                  hintText: "Enter Header Text"),
                             ),
                             SizedBox(
                               //10
@@ -255,14 +232,14 @@ static String _adUnitID = Strings.iosAdmobNativeId;
                                   footerText = val;
                                 });
                               },
-                              decoration:
-                                  InputDecoration(hintText: "Enter Footer Text"),
+                              decoration: InputDecoration(
+                                  hintText: "Enter Footer Text"),
                             ),
                             SizedBox(
                               //20
                               height: 2.23 * SizeConfig.heightMultiplier,
                             ),
-                            RaisedButton(
+                            ElevatedButton(
                               onPressed: () {
                                 //ToDo
                                 takeScreenshot();
@@ -277,15 +254,8 @@ static String _adUnitID = Strings.iosAdmobNativeId;
                         //   child: Text("Select image to get started",
                         //       style: Theme.of(context).textTheme.bodyText1),
                         // ),
-                      ),
-                _imageFile != null ? Image.file(_imageFile) : Container(),
-                Divider(),
-                NativeAdContainer(
-                    height: _height,
-                    adUnitID: _adUnitID,
-                    nativeAdController: _nativeAdController,
-                    numberAds: 1,
-                    ),
+                        ),
+                _imageFile != null ? Image.file(_imageFile!) : Container(),
                 Divider(),
               ],
             ),
@@ -299,22 +269,29 @@ static String _adUnitID = Strings.iosAdmobNativeId;
         child: Icon(Icons.photo_library),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      bottomNavigationBar: Container(
+        alignment: Alignment.center,
+        height: bannerAd1.size.height.toDouble(),
+        width: bannerAd1.size.width.toDouble(),
+        child: AdWidget(ad: bannerAd1),
+      ),
     );
   }
 
   takeScreenshot() async {
     RenderRepaintBoundary boundary =
-        globalKey.currentContext.findRenderObject();
+        globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
     ui.Image image = await boundary.toImage();
     final directory = (await getApplicationDocumentsDirectory()).path;
-    ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    ByteData byteData =
+        await image.toByteData(format: ui.ImageByteFormat.png) as ByteData;
     Uint8List pngBytes = byteData.buffer.asUint8List();
     print(pngBytes);
     File imgFile = new File('$directory/screenshot${rng.nextInt(200)}.png');
     setState(() {
       _imageFile = imgFile;
     });
-    _savefile(_imageFile);
+    _savefile(_imageFile!);
     //saveFileLocal();
     imgFile.writeAsBytes(pngBytes);
   }
@@ -324,12 +301,6 @@ static String _adUnitID = Strings.iosAdmobNativeId;
     final result = await ImageGallerySaver.saveImage(
         Uint8List.fromList(await file.readAsBytes()));
     print(result);
-    facebookAppEvents.logEvent(
-                        name: "Save Meme",
-                        parameters: {
-                          'Meme Saved': 'Yes',
-                        },
-                      );
   }
 
   _askPermission() async {

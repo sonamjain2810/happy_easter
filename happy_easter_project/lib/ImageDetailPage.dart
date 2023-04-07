@@ -2,31 +2,31 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'data/Images.dart';
 import 'package:facebook_app_events/facebook_app_events.dart';
-import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_native_admob/native_admob_controller.dart';
-import 'package:image_picker_saver/image_picker_saver.dart';
 import 'package:http/http.dart' as http;
-import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'data/Strings.dart';
 import 'utils/SizeConfig.dart';
-import 'NativeAdContainer.dart';
 
 /*
 how to pass data into another screen watch this video
 https://www.youtube.com/watch?v=d5PpeNb-dOY
  */
 
+// ignore: must_be_immutable
+// ignore: late
 class ImageDetailPage extends StatefulWidget {
-  int index;
+  int? index;
   ImageDetailPage(this.index);
   @override
-  _ImageDetailPageState createState() => _ImageDetailPageState(index);
+  _ImageDetailPageState createState() => _ImageDetailPageState(index!);
 }
 
 class _ImageDetailPageState extends State<ImageDetailPage> {
@@ -36,52 +36,40 @@ class _ImageDetailPageState extends State<ImageDetailPage> {
 
   static final facebookAppEvents = FacebookAppEvents();
 
-// Native Ad Open
-  static String _adUnitID = Strings.iosAdmobNativeId;
-  final _nativeAdController = NativeAdmobController();
-  double _height = 0;
-
-  StreamSubscription _subscription;
+  StreamSubscription? _subscription;
 
   var filePath;
   var BASE64_IMAGE;
 
-//Native Ad Close
-
+  late BannerAd bannerAd1;
+  bool isBannerAdLoaded = false;
   @override
   void initState() {
     super.initState();
+    bannerAd1 = GetBannerAd();
+  }
 
-    //Native Ad
-    _subscription = _nativeAdController.stateChanged.listen(_onStateChanged);
-    //
+  BannerAd GetBannerAd() {
+    return BannerAd(
+        size: AdSize.mediumRectangle,
+        adUnitId: Strings.iosAdmobBannerId,
+        listener: BannerAdListener(onAdLoaded: (_) {
+          setState(() {
+            isBannerAdLoaded = true;
+          });
+        }, onAdFailedToLoad: (ad, error) {
+          isBannerAdLoaded = true;
+          ad.dispose();
+        }),
+        request: AdRequest())
+      ..load();
   }
 
   @override
   void dispose() {
-    //Native Ad
-    _subscription.cancel();
-    _nativeAdController.dispose();
+    _subscription?.cancel();
     super.dispose();
-  }
-
-  void _onStateChanged(AdLoadState state) {
-    switch (state) {
-      case AdLoadState.loading:
-        setState(() {
-          _height = 0;
-        });
-        break;
-
-      case AdLoadState.loadCompleted:
-        setState(() {
-          _height = 36.83 * SizeConfig.heightMultiplier;
-        });
-        break;
-
-      default:
-        break;
-    }
+    bannerAd1.dispose();
   }
 
   bool visible = false;
@@ -108,19 +96,19 @@ class _ImageDetailPageState extends State<ImageDetailPage> {
           appBar: AppBar(
               title: Text(
             "Image No. ${index + 1}",
-            style: Theme.of(context).appBarTheme.textTheme.headline1,
+            style: Theme.of(context).appBarTheme.textTheme!.headline1,
           )),
           body: SafeArea(
             child: SingleChildScrollView(
               child: Container(
-                margin: new EdgeInsets.symmetric(
+                margin: EdgeInsets.symmetric(
                     vertical: 1.93 * SizeConfig.widthMultiplier,
                     horizontal: 1.93 * SizeConfig.widthMultiplier),
-                child: new Card(
-                  child: new Container(
+                child: Card(
+                  child: Container(
                       padding:
-                          new EdgeInsets.all(1.93 * SizeConfig.widthMultiplier),
-                      child: new Column(
+                          EdgeInsets.all(1.93 * SizeConfig.widthMultiplier),
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           CachedNetworkImage(
@@ -135,7 +123,7 @@ class _ImageDetailPageState extends State<ImageDetailPage> {
                           Padding(
                             padding: EdgeInsets.all(
                                 1.93 * SizeConfig.widthMultiplier),
-                            child: new Column(
+                            child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
                                 Visibility(
@@ -148,7 +136,7 @@ class _ImageDetailPageState extends State<ImageDetailPage> {
                                           MainAxisAlignment.spaceEvenly,
                                       children: [
                                         Text(
-                                          "We are downloading your image to share.. \nBe Paitence Thanks!!",
+                                          "We are downloading your image to share.. \nKeep Patience Thanks!!",
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodyText1,
@@ -156,37 +144,43 @@ class _ImageDetailPageState extends State<ImageDetailPage> {
                                         CircularProgressIndicator(),
                                       ],
                                     )),
-                                RaisedButton(
-                                  onPressed: () async {
-                                    setState(() {});
-                                    loadProgress();
-                                    await shareJPGImageFromUrl(index);
-                                    loadProgress();
-                                  },
-                                  child: Text('Share'),
-                                ),
+                                Builder(builder: (BuildContext context) {
+                                  return ElevatedButton(
+                                    onPressed: () async {
+                                      setState(() {});
+                                      loadProgress();
+                                      await shareJPGImageFromUrl(
+                                          context, index);
+                                      loadProgress();
+                                    },
+                                    child: Text('Share'),
+                                  );
+                                })
                               ],
                             ),
                           ),
                           Divider(),
-                          NativeAdContainer(
-                            height: _height,
-                            adUnitID: _adUnitID,
-                            nativeAdController: _nativeAdController,
-                            numberAds: 1,
+                          //banner
+                          Container(
+                            height: bannerAd1.size.height.toDouble(),
+                            width: bannerAd1.size.width.toDouble(),
+                            child: AdWidget(ad: bannerAd1),
                           ),
+                          //banner
                         ],
                       )),
                 ),
               ),
             ),
           ),
+          bottomNavigationBar: Container(
+              alignment: Alignment.center, height: 50, child: Container()),
         );
       },
     );
   }
 
-  Future<void> shareJPGImageFromUrl(int index) async {
+  Future<void> shareJPGImageFromUrl(BuildContext context, int index) async {
     try {
       facebookAppEvents.logEvent(
         name: "JPG Share",
@@ -199,20 +193,31 @@ class _ImageDetailPageState extends State<ImageDetailPage> {
           await HttpClient().getUrl(Uri.parse(Images.images_path[index]));
       var response = await request.close();
       Uint8List bytes = await consolidateHttpClientResponseBytes(response);
-      await Share.file('Share JPG Image', 'share_jpg.jpg', bytes, 'image/jpg');
+      final tempDir = await getTemporaryDirectory();
+      final path = '${tempDir.path}/image.jpg';
+      File(path).writeAsBytesSync(bytes);
+      final files = <XFile>[];
+      final box = context.findRenderObject() as RenderBox?;
+      files.add(XFile(path, name: "image"));
+
+      await Share.shareXFiles([files[0]],
+          text: "Share Image",
+          subject: "subject",
+          sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
+      //await Share.shareFiles([path]);
     } catch (e) {
       print('error: $e');
     }
   }
 
   void onImageDowloadButtonPressed() async {
-    var response = await http.get(Images.images_path[index]);
-    filePath = await ImagePickerSaver.saveFile(fileData: response.bodyBytes);
+    var response = await http.get(Images.images_path[index] as Uri);
+    //filePath = await ImagePickerSaver.saveFile(fileData: response.bodyBytes);
   }
 
   void onImageShareButtonPressed() async {
-    var response = await http.get(Images.images_path[index]);
-    filePath = await ImagePickerSaver.saveFile(fileData: response.bodyBytes);
+    var response = await http.get(Images.images_path[index] as Uri);
+    //filePath = await ImagePickerSaver.saveFile(fileData: response.bodyBytes);
     print(filePath);
 
     BASE64_IMAGE = filePath;
